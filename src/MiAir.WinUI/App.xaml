@@ -1,0 +1,21 @@
+<Application
+    x:Class="MiAir.WinUI.App"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:converters="using:MiAir.WinUI.Converters">
+    <Application.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <XamlControlsResources xmlns="using:Microsoft.UI.Xaml.Controls" />
+            </ResourceDictionary.MergedDictionaries>
+
+            <!-- Global Value Converters -->
+            <converters:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+            <converters:BooleanToVisibilityInvertedConverter x:Key="BooleanToVisibilityInvertedConverter"/>
+            <converters:StringNotEmptyToBoolConverter x:Key="StringNotEmptyToBoolConverter"/>
+            <converters:VolumePercentConverter x:Key="VolumePercentConverter"/>
+            <converters:StringPrefixConverter x:Key="StringPrefixConverter"/>
+            <converters:VersionFormatConverter x:Key="VersionFormatConverter"/>
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>

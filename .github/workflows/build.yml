@@ -1,0 +1,56 @@
+name: Build MiAir for Windows
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: windows-latest
+    strategy:
+      matrix:
+        platform: [ x64, ARM64 ]
+        configuration: [ Release ]
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup .NET 8
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+
+      - name: Setup Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.22'
+
+      - name: Build Go Core (Dual-Architecture)
+        run: |
+          cd core
+          $arch = if ("${{ matrix.platform }}" -eq "ARM64") { "arm64" } else { "amd64" }
+          $env:CGO_ENABLED = "0"
+          $env:GOOS = "windows"
+          $env:GOARCH = $arch
+          New-Item -ItemType Directory -Force -Path "bin/win-$($arch)"
+          go build -trimpath -ldflags="-s -w" -o "bin/win-$($arch)/miair-core.exe" .
+
+      - name: Build WinUI 3 App
+        run: |
+          $rid = if ("${{ matrix.platform }}" -eq "ARM64") { "win-arm64" } else { "win-x64" }
+          dotnet publish src/MiAir.WinUI/MiAir.WinUI.csproj `
+            -c ${{ matrix.configuration }} `
+            -r $rid `
+            --self-contained true `
+            -p:Platform=${{ matrix.platform }} `
+            -p:WindowsPackageType=None
+
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: MiAir-Windows-${{ matrix.platform }}
+          path: src/MiAir.WinUI/bin/${{ matrix.platform }}/${{ matrix.configuration }}/net8.0-windows10.0.19041.0/*/publish/
