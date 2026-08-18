@@ -44,7 +44,7 @@
 
             <!-- Loading indicator -->
             <ProgressBar IsIndeterminate="True"
-                         Visibility="{x:Bind ViewModel.IsLoading, Mode=OneWay}"
+                         Visibility="{x:Bind ViewModel.IsLoading, Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverter}}"
                          HorizontalAlignment="Stretch"/>
 
             <!-- Speakers List Grid -->
@@ -87,7 +87,7 @@
                                         <Border CornerRadius="4"
                                                 Background="{ThemeResource AccentFillColorDefaultBrush}"
                                                 Padding="6,2"
-                                                Visibility="{x:Bind IsSelected}">
+                                                Visibility="{x:Bind IsSelected, Converter={StaticResource BooleanToVisibilityConverter}}">
                                             <TextBlock Text="当前绑定" FontSize="11" FontWeight="SemiBold" Foreground="White"/>
                                         </Border>
                                     </StackPanel>

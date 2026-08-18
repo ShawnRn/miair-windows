@@ -35,7 +35,7 @@
                             <Border CornerRadius="6"
                                     Background="{ThemeResource AccentFillColorDefaultBrush}"
                                     Padding="10,4"
-                                    Visibility="{x:Bind ViewModel.IsStreaming, Mode=OneWay}">
+                                    Visibility="{x:Bind ViewModel.IsStreaming, Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverter}}">
                                 <StackPanel Orientation="Horizontal" Spacing="6">
                                     <FontIcon Glyph="&#xE768;" FontSize="12" Foreground="White"/>
                                     <TextBlock Text="{x:Bind ViewModel.StatusBadgeText, Mode=OneWay}"
@@ -67,7 +67,7 @@
                                    Style="{StaticResource SubtitleTextBlockStyle}"
                                    FontWeight="SemiBold"/>
 
-                        <StackPanel Orientation="Horizontal" Spacing="16" Visibility="{x:Bind ViewModel.IsStreaming, Mode=OneWay}">
+                        <StackPanel Orientation="Horizontal" Spacing="16" Visibility="{x:Bind ViewModel.IsStreaming, Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverter}}">
                             <StackPanel Orientation="Horizontal" Spacing="6" VerticalAlignment="Center">
                                 <FontIcon Glyph="&#xE753;" FontSize="13" Foreground="{ThemeResource TextFillColorSecondaryBrush}"/>
                                 <TextBlock Text="发送端：" Style="{StaticResource BodyTextBlockStyle}" Foreground="{ThemeResource TextFillColorSecondaryBrush}"/>
