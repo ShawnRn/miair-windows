@@ -51,11 +51,12 @@ dotnet publish "$ScriptDir\src\MiAir.WinUI\MiAir.WinUI.csproj" `
     -c $Configuration `
     -r $rid `
     --self-contained true `
-    -p:Platform=$Platform `
-    -p:PublishSingleFile=false `
     -p:WindowsPackageType=None
 
-$outputDir = "$ScriptDir\src\MiAir.WinUI\bin\$Platform\$Configuration\net8.0-windows10.0.19041.0\$rid\publish"
+$outputDir = "$ScriptDir\src\MiAir.WinUI\bin\$Configuration\net8.0-windows10.0.19041.0\$rid\publish"
+if (-not (Test-Path $outputDir)) {
+    $outputDir = "$ScriptDir\src\MiAir.WinUI\bin\$Platform\$Configuration\net8.0-windows10.0.19041.0\$rid\publish"
+}
 
 Write-Host ""
 Write-Host "========================================" -ForegroundColor Green
