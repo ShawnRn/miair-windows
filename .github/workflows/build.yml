@@ -48,14 +48,16 @@ jobs:
       - name: Build WinUI 3 App
         run: |
           $rid = if ("${{ matrix.platform }}" -eq "ARM64") { "win-arm64" } else { "win-x64" }
-          dotnet publish src/MiAir.WinUI/MiAir.WinUI.csproj `
-            -c ${{ matrix.configuration }} `
-            -r $rid `
-            --self-contained true `
-            -p:Platform=${{ matrix.platform }} `
-            -p:WindowsPackageType=None `
-            -p:PublishReadyToRun=false `
-            -v normal
+          msbuild src/MiAir.WinUI/MiAir.WinUI.csproj `
+            /restore `
+            /t:Publish `
+            /p:Configuration=${{ matrix.configuration }} `
+            /p:Platform=${{ matrix.platform }} `
+            /p:RuntimeIdentifier=$rid `
+            /p:SelfContained=true `
+            /p:WindowsPackageType=None `
+            /p:PublishDir="bin/${{ matrix.platform }}/${{ matrix.configuration }}/net8.0-windows10.0.19041.0/$rid/publish/" `
+            /v:normal
 
       - name: Package Output Zip
         run: |
