@@ -34,6 +34,9 @@ public partial class SettingsViewModel : ObservableObject
     private string _sourcePolicy = "latest";
 
     [ObservableProperty]
+    private int _sourcePolicyIndex = 0;
+
+    [ObservableProperty]
     private double _idleTimeout = 10;
 
     [ObservableProperty]
@@ -67,6 +70,13 @@ public partial class SettingsViewModel : ObservableObject
         DlnaEnabled = s.DlnaEnabled;
         DlnaPort = s.DlnaPort;
         SourcePolicy = s.SourcePolicy;
+        SourcePolicyIndex = s.SourcePolicy switch
+        {
+            "lock" => 1,
+            "idle" => 2,
+            "priority" => 3,
+            _ => 0
+        };
         IdleTimeout = s.IdleTimeout;
         PreferredProtocol = s.PreferredProtocol;
         StartOnBoot = StartupService.IsStartOnBootEnabled();
@@ -85,7 +95,13 @@ public partial class SettingsViewModel : ObservableObject
         s.BufferMs = (int)BufferMs;
         s.DlnaEnabled = DlnaEnabled;
         s.DlnaPort = (int)DlnaPort;
-        s.SourcePolicy = SourcePolicy;
+        s.SourcePolicy = SourcePolicyIndex switch
+        {
+            1 => "lock",
+            2 => "idle",
+            3 => "priority",
+            _ => "latest"
+        };
         s.IdleTimeout = (int)IdleTimeout;
         s.PreferredProtocol = PreferredProtocol;
         s.MinimizeToTrayOnClose = MinimizeToTrayOnClose;

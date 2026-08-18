@@ -159,12 +159,11 @@
                             </StackPanel>
 
                             <ComboBox Width="200" HorizontalAlignment="Right" VerticalAlignment="Center"
-                                      SelectedValue="{x:Bind ViewModel.SourcePolicy, Mode=TwoWay}"
-                                      SelectedValuePath="Tag">
-                                <ComboBoxItem Content="最新设备优先 (推荐)" Tag="latest"/>
-                                <ComboBoxItem Content="当前设备锁定" Tag="lock"/>
-                                <ComboBoxItem Content="空闲后允许接管" Tag="idle"/>
-                                <ComboBoxItem Content="按协议优先级" Tag="priority"/>
+                                      SelectedIndex="{x:Bind ViewModel.SourcePolicyIndex, Mode=TwoWay}">
+                                <ComboBoxItem Content="最新设备优先 (推荐)"/>
+                                <ComboBoxItem Content="当前设备锁定"/>
+                                <ComboBoxItem Content="空闲后允许接管"/>
+                                <ComboBoxItem Content="按协议优先级"/>
                             </ComboBox>
                         </Grid>
                     </StackPanel>

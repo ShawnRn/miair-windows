@@ -5,6 +5,10 @@
     xmlns:converters="using:MiAir.WinUI.Converters">
     <Application.Resources>
         <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <XamlControlsResources xmlns="using:Microsoft.UI.Xaml.Controls" />
+            </ResourceDictionary.MergedDictionaries>
+
             <!-- Global Value Converters -->
             <converters:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
             <converters:BooleanToVisibilityInvertedConverter x:Key="BooleanToVisibilityInvertedConverter"/>
