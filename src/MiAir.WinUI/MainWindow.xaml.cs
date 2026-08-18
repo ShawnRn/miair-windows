@@ -79,7 +79,8 @@ public sealed partial class MainWindow : Window
             menu.Items.Add(exitItem);
 
             _trayIcon.ContextFlyout = menu;
-            _trayIcon.TrayLeftMouseDown += (s, e) => ShowAndActivate();
+            _trayIcon.LeftClickCommand = new CommunityToolkit.Mvvm.Input.RelayCommand(ShowAndActivate);
+            _trayIcon.DoubleClickCommand = new CommunityToolkit.Mvvm.Input.RelayCommand(ShowAndActivate);
             _trayIcon.ForceCreate();
         }
         catch
