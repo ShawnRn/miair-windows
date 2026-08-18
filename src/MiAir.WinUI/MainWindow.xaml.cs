@@ -1,9 +1,11 @@
 using System;
-using System.Runtime.InteropServices;
+using System.IO;
+using H.NotifyIcon;
 using Microsoft.UI;
 using Microsoft.UI.Windowing;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Media.Imaging;
 using MiAir.WinUI.Services;
 using MiAir.WinUI.ViewModels;
 using MiAir.WinUI.Views;
@@ -15,6 +17,7 @@ public sealed partial class MainWindow : Window
 {
     public MainViewModel ViewModel { get; } = new();
     private AppWindow? _appWindow;
+    private TaskbarIcon? _trayIcon;
 
     public MainWindow()
     {
@@ -26,6 +29,9 @@ public sealed partial class MainWindow : Window
 
         // Initialize AppWindow sizing & position
         InitWindow();
+
+        // Setup System Tray Icon
+        InitTrayIcon();
 
         // Default navigation
         NavView.SelectedItem = NavView.MenuItems[0];
@@ -51,6 +57,37 @@ public sealed partial class MainWindow : Window
         }
     }
 
+    private void InitTrayIcon()
+    {
+        try
+        {
+            _trayIcon = new TaskbarIcon
+            {
+                ToolTipText = "MiAir 小爱音箱投播"
+            };
+
+            var menu = new MenuFlyout();
+
+            var showItem = new MenuFlyoutItem { Text = "显示主窗口" };
+            showItem.Click += (s, e) => ShowAndActivate();
+            menu.Items.Add(showItem);
+
+            menu.Items.Add(new MenuFlyoutSeparator());
+
+            var exitItem = new MenuFlyoutItem { Text = "退出 MiAir" };
+            exitItem.Click += (s, e) => ExitApp();
+            menu.Items.Add(exitItem);
+
+            _trayIcon.ContextFlyout = menu;
+            _trayIcon.TrayLeftMouseDown += (s, e) => ShowAndActivate();
+            _trayIcon.ForceCreate();
+        }
+        catch
+        {
+            // Fallback if tray icon cannot be created
+        }
+    }
+
     private void OnWindowClosing(AppWindow sender, AppWindowClosingEventArgs args)
     {
         if (SettingsService.Instance.Settings.MinimizeToTrayOnClose)
@@ -60,7 +97,7 @@ public sealed partial class MainWindow : Window
         }
         else
         {
-            CoreProcessService.Instance.StopCore();
+            ExitApp();
         }
     }
 
@@ -83,26 +120,20 @@ public sealed partial class MainWindow : Window
         }
     }
 
-    private void OnTrayIconLeftMouseDown(object sender, RoutedEventArgs e)
-    {
-        ShowAndActivate();
-    }
-
-    private void OnShowMainWindowClick(object sender, RoutedEventArgs e)
-    {
-        ShowAndActivate();
-    }
-
-    private void OnExitAppClick(object sender, RoutedEventArgs e)
-    {
-        CoreProcessService.Instance.StopCore();
-        TrayIcon.Dispose();
-        Application.Current.Exit();
-    }
-
     public void ShowAndActivate()
     {
         _appWindow?.Show();
         this.Activate();
+    }
+
+    public void ExitApp()
+    {
+        CoreProcessService.Instance.StopCore();
+        try
+        {
+            _trayIcon?.Dispose();
+        }
+        catch { }
+        Application.Current.Exit();
     }
 }

@@ -4,8 +4,6 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:tb="using:H.NotifyIcon"
-    xmlns:vm="using:MiAir.WinUI.ViewModels"
     mc:Ignorable="d"
     Title="MiAir for Windows">
 
@@ -57,26 +55,5 @@
             <!-- Content Page Frame -->
             <Frame x:Name="ContentFrame"/>
         </NavigationView>
-
-        <!-- Windows System Tray NotifyIcon -->
-        <tb:TaskbarIcon x:Name="TrayIcon"
-                        ToolTipText="MiAir 小爱音箱投播"
-                        TrayLeftMouseDown="OnTrayIconLeftMouseDown">
-            <tb:TaskbarIcon.ContextFlyout>
-                <MenuFlyout>
-                    <MenuFlyoutItem Text="显示主窗口" Click="OnShowMainWindowClick">
-                        <MenuFlyoutItem.Icon>
-                            <FontIcon Glyph="&#xE737;"/>
-                        </MenuFlyoutItem.Icon>
-                    </MenuFlyoutItem>
-                    <MenuFlyoutSeparator/>
-                    <MenuFlyoutItem Text="退出 MiAir" Click="OnExitAppClick">
-                        <MenuFlyoutItem.Icon>
-                            <FontIcon Glyph="&#xE711;"/>
-                        </MenuFlyoutItem.Icon>
-                    </MenuFlyoutItem>
-                </MenuFlyout>
-            </tb:TaskbarIcon.ContextFlyout>
-        </tb:TaskbarIcon>
     </Grid>
 </Window>
