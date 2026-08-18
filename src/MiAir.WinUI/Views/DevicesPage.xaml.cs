@@ -13,6 +13,7 @@ public sealed partial class DevicesPage : Page
     public DevicesPage()
     {
         this.InitializeComponent();
+        this.DataContext = ViewModel;
     }
 
     protected override async void OnNavigatedTo(NavigationEventArgs e)

@@ -4,7 +4,6 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:vm="using:MiAir.WinUI.ViewModels"
     mc:Ignorable="d">
 
     <ScrollViewer VerticalScrollBarVisibility="Auto" Padding="32,24,32,32">
@@ -13,105 +12,98 @@
             <!-- Page Header -->
             <StackPanel Spacing="4">
                 <TextBlock Text="运行看板" Style="{StaticResource TitleTextBlockStyle}" FontWeight="SemiBold"/>
-                <TextBlock Text="实时音频投播会话与小爱音箱桥接状态" Style="{StaticResource BodyTextBlockStyle}" Foreground="{ThemeResource TextFillColorSecondaryBrush}"/>
+                <TextBlock Text="实时监控投播状态、活动客户端与音频流指标" Style="{StaticResource BodyTextBlockStyle}" Foreground="{ThemeResource TextFillColorSecondaryBrush}"/>
             </StackPanel>
 
-            <!-- Hero Active Streaming Card -->
+            <!-- Card 1: Main Streaming Hero Card -->
             <Border CornerRadius="12"
                     BorderThickness="1"
                     BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
                     Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
                     Padding="24">
-                <Grid RowSpacing="16">
+                <Grid RowSpacing="20">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
 
-                    <!-- Top Bar: Status Badge and Version -->
+                    <!-- Top Row: Status Badge & Info -->
                     <Grid Grid.Row="0">
-                        <StackPanel Orientation="Horizontal" Spacing="8" VerticalAlignment="Center">
+                        <StackPanel Orientation="Horizontal" Spacing="12" VerticalAlignment="Center">
+                            <!-- Streaming Active Badge -->
                             <Border CornerRadius="6"
                                     Background="{ThemeResource AccentFillColorDefaultBrush}"
                                     Padding="10,4"
-                                    Visibility="{x:Bind ViewModel.IsStreaming, Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                    Visibility="{Binding IsStreaming, Converter={StaticResource BooleanToVisibilityConverter}}">
                                 <StackPanel Orientation="Horizontal" Spacing="6">
                                     <FontIcon Glyph="&#xE768;" FontSize="12" Foreground="White"/>
-                                    <TextBlock Text="{x:Bind ViewModel.StatusBadgeText, Mode=OneWay}"
+                                    <TextBlock Text="{Binding StatusBadgeText}"
                                                FontSize="12" FontWeight="SemiBold" Foreground="White"/>
                                 </StackPanel>
                             </Border>
 
+                            <!-- Idle Badge -->
                             <Border CornerRadius="6"
                                     Background="{ThemeResource SubtleFillColorSecondaryBrush}"
                                     Padding="10,4"
-                                    Visibility="{x:Bind ViewModel.IsStreaming, Mode=OneWay, Converter={StaticResource BooleanToVisibilityInvertedConverter}}">
+                                    Visibility="{Binding IsStreaming, Converter={StaticResource BooleanToVisibilityInvertedConverter}}">
                                 <StackPanel Orientation="Horizontal" Spacing="6">
                                     <FontIcon Glyph="&#xE9F5;" FontSize="12" Foreground="{ThemeResource TextFillColorSecondaryBrush}"/>
-                                    <TextBlock Text="{x:Bind ViewModel.StatusBadgeText, Mode=OneWay}"
+                                    <TextBlock Text="{Binding StatusBadgeText}"
                                                FontSize="12" FontWeight="Medium" Foreground="{ThemeResource TextFillColorSecondaryBrush}"/>
                                 </StackPanel>
                             </Border>
                         </StackPanel>
 
                         <TextBlock HorizontalAlignment="Right" VerticalAlignment="Center"
-                                   Text="{x:Bind ViewModel.Version, Mode=OneWay, Converter={StaticResource VersionFormatConverter}}"
+                                   Text="{Binding Version, Converter={StaticResource VersionFormatConverter}}"
                                    Style="{StaticResource CaptionTextBlockStyle}"
                                    Foreground="{ThemeResource TextFillColorTertiaryBrush}"/>
                     </Grid>
 
                     <!-- Center Body: Main Info -->
                     <StackPanel Grid.Row="1" Spacing="8" Margin="0,8,0,8">
-                        <TextBlock Text="{x:Bind ViewModel.DeviceName, Mode=OneWay}"
+                        <TextBlock Text="{Binding DeviceName}"
                                    Style="{StaticResource SubtitleTextBlockStyle}"
                                    FontWeight="SemiBold"/>
 
-                        <StackPanel Orientation="Horizontal" Spacing="16" Visibility="{x:Bind ViewModel.IsStreaming, Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverter}}">
+                        <StackPanel Orientation="Horizontal" Spacing="16" Visibility="{Binding IsStreaming, Converter={StaticResource BooleanToVisibilityConverter}}">
                             <StackPanel Orientation="Horizontal" Spacing="6" VerticalAlignment="Center">
                                 <FontIcon Glyph="&#xE753;" FontSize="13" Foreground="{ThemeResource TextFillColorSecondaryBrush}"/>
                                 <TextBlock Text="发送端：" Style="{StaticResource BodyTextBlockStyle}" Foreground="{ThemeResource TextFillColorSecondaryBrush}"/>
-                                <TextBlock Text="{x:Bind ViewModel.ClientDevice, Mode=OneWay}" Style="{StaticResource BodyStrongTextBlockStyle}"/>
+                                <TextBlock Text="{Binding ClientDevice}" Style="{StaticResource BodyStrongTextBlockStyle}"/>
                             </StackPanel>
-                            
+
                             <StackPanel Orientation="Horizontal" Spacing="6" VerticalAlignment="Center">
-                                <FontIcon Glyph="&#xE823;" FontSize="13" Foreground="{ThemeResource TextFillColorSecondaryBrush}"/>
-                                <TextBlock Text="时长：" Style="{StaticResource BodyTextBlockStyle}" Foreground="{ThemeResource TextFillColorSecondaryBrush}"/>
-                                <TextBlock Text="{x:Bind ViewModel.StreamDuration, Mode=OneWay}" Style="{StaticResource BodyStrongTextBlockStyle}"/>
+                                <FontIcon Glyph="&#xE916;" FontSize="13" Foreground="{ThemeResource TextFillColorSecondaryBrush}"/>
+                                <TextBlock Text="已推流：" Style="{StaticResource BodyTextBlockStyle}" Foreground="{ThemeResource TextFillColorSecondaryBrush}"/>
+                                <TextBlock Text="{Binding StreamDuration}" Style="{StaticResource BodyStrongTextBlockStyle}"/>
                             </StackPanel>
                         </StackPanel>
 
-                        <TextBlock Text="局域网内任意 iPhone、Mac 或 Android 音乐 App 点击投送，即可无缝串流至小爱音箱。"
+                        <TextBlock Text="等待 iOS / Mac (AirPlay) 或 Android / 音乐 App (DLNA) 连接中..."
                                    Style="{StaticResource BodyTextBlockStyle}"
                                    Foreground="{ThemeResource TextFillColorSecondaryBrush}"
-                                   Visibility="{x:Bind ViewModel.IsStreaming, Mode=OneWay, Converter={StaticResource BooleanToVisibilityInvertedConverter}}"/>
+                                   Visibility="{Binding IsStreaming, Converter={StaticResource BooleanToVisibilityInvertedConverter}}"/>
                     </StackPanel>
 
-                    <!-- Bottom Controls: Volume & Pause -->
-                    <Grid Grid.Row="2" ColumnSpacing="16" VerticalAlignment="Center">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="Auto"/>
-                        </Grid.ColumnDefinitions>
-
-                        <!-- Volume Slider -->
-                        <StackPanel Grid.Column="0" Orientation="Horizontal" Spacing="12" VerticalAlignment="Center">
-                            <FontIcon Glyph="&#xE767;" FontSize="14" Foreground="{ThemeResource TextFillColorSecondaryBrush}"/>
+                    <!-- Bottom Row: Audio Controls -->
+                    <Grid Grid.Row="2">
+                        <StackPanel Orientation="Horizontal" Spacing="16" VerticalAlignment="Center">
+                            <FontIcon Glyph="&#xE767;" FontSize="16" Foreground="{ThemeResource TextFillColorSecondaryBrush}"/>
                             <Slider Width="220" Minimum="0" Maximum="100"
-                                    Value="{x:Bind ViewModel.Volume, Mode=TwoWay}"
+                                    Value="{Binding Volume, Mode=TwoWay}"
                                     ValueChanged="OnVolumeSliderValueChanged"
                                     VerticalAlignment="Center"/>
-                            <TextBlock Text="{x:Bind ViewModel.Volume, Mode=OneWay, Converter={StaticResource VolumePercentConverter}}"
-                                       Style="{StaticResource BodyTextBlockStyle}"
-                                       Foreground="{ThemeResource TextFillColorSecondaryBrush}"
-                                       VerticalAlignment="Center"/>
+                            <TextBlock Text="{Binding Volume, Converter={StaticResource VolumePercentConverter}}"
+                                       Width="45" VerticalAlignment="Center"
+                                       Style="{StaticResource BodyStrongTextBlockStyle}"/>
                         </StackPanel>
 
-                        <!-- Pause / Resume Button -->
-                        <Button Grid.Column="1"
-                                Command="{x:Bind ViewModel.PausePlaybackCommand}"
-                                Style="{StaticResource DefaultButtonStyle}"
-                                Padding="16,6">
+                        <Button HorizontalAlignment="Right"
+                                Command="{Binding PausePlaybackCommand}"
+                                Padding="16,8">
                             <StackPanel Orientation="Horizontal" Spacing="8">
                                 <FontIcon Glyph="&#xE769;" FontSize="13"/>
                                 <TextBlock Text="暂停投播"/>
@@ -121,54 +113,48 @@
                 </Grid>
             </Border>
 
-            <!-- Cards Grid: Target Device & Token Status -->
+            <!-- Card 2: Status Details Grid -->
             <Grid ColumnSpacing="16">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
 
-                <!-- Speaker Card -->
+                <!-- Left: Target Speaker -->
                 <Border Grid.Column="0"
                         CornerRadius="10"
                         BorderThickness="1"
                         BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
                         Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
                         Padding="16">
-                    <StackPanel Spacing="10">
+                    <StackPanel Spacing="8">
                         <StackPanel Orientation="Horizontal" Spacing="8">
                             <FontIcon Glyph="&#xE7F6;" FontSize="16" Foreground="{ThemeResource AccentFillColorDefaultBrush}"/>
-                            <TextBlock Text="目标音箱" FontWeight="SemiBold" Style="{StaticResource BodyStrongTextBlockStyle}"/>
+                            <TextBlock Text="目标音箱" Style="{StaticResource BodyStrongTextBlockStyle}"/>
                         </StackPanel>
-
-                        <TextBlock Text="{x:Bind ViewModel.TargetSpeaker, Mode=OneWay}"
+                        <TextBlock Text="{Binding TargetSpeaker}"
                                    Style="{StaticResource BodyTextBlockStyle}"
-                                   TextTrimming="CharacterEllipsis"/>
-                        <TextBlock Text="可在【音箱管理】中切换绑定设备"
-                                   Style="{StaticResource CaptionTextBlockStyle}"
-                                   Foreground="{ThemeResource TextFillColorTertiaryBrush}"/>
+                                   Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                                   TextWrapping="Wrap"/>
                     </StackPanel>
                 </Border>
 
-                <!-- Token Card -->
+                <!-- Right: Account Token Status -->
                 <Border Grid.Column="1"
                         CornerRadius="10"
                         BorderThickness="1"
                         BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
                         Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
                         Padding="16">
-                    <StackPanel Spacing="10">
+                    <StackPanel Spacing="8">
                         <StackPanel Orientation="Horizontal" Spacing="8">
-                            <FontIcon Glyph="&#xE8D7;" FontSize="16" Foreground="{ThemeResource AccentFillColorDefaultBrush}"/>
-                            <TextBlock Text="小米账号授权凭据" FontWeight="SemiBold" Style="{StaticResource BodyStrongTextBlockStyle}"/>
+                            <FontIcon Glyph="&#xE774;" FontSize="16" Foreground="{ThemeResource AccentFillColorDefaultBrush}"/>
+                            <TextBlock Text="账号授权" Style="{StaticResource BodyStrongTextBlockStyle}"/>
                         </StackPanel>
-
-                        <TextBlock Text="{x:Bind ViewModel.TokenStatusText, Mode=OneWay}"
+                        <TextBlock Text="{Binding TokenStatusText}"
                                    Style="{StaticResource BodyTextBlockStyle}"
-                                   TextTrimming="CharacterEllipsis"/>
-                        <TextBlock Text="后台每 6 小时自动与云端保活刷新"
-                                   Style="{StaticResource CaptionTextBlockStyle}"
-                                   Foreground="{ThemeResource TextFillColorTertiaryBrush}"/>
+                                   Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                                   TextWrapping="Wrap"/>
                     </StackPanel>
                 </Border>
             </Grid>

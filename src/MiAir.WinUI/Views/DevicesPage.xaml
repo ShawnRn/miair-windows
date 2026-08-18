@@ -5,50 +5,49 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:models="using:MiAir.WinUI.Models"
-    xmlns:vm="using:MiAir.WinUI.ViewModels"
     mc:Ignorable="d">
 
     <ScrollViewer VerticalScrollBarVisibility="Auto" Padding="32,24,32,32">
         <StackPanel Spacing="24" MaxWidth="900" HorizontalAlignment="Stretch">
-            
+
             <!-- Page Header -->
             <Grid>
                 <StackPanel Spacing="4">
-                    <TextBlock Text="音箱管理" Style="{StaticResource TitleTextBlockStyle}" FontWeight="SemiBold"/>
-                    <TextBlock Text="绑定您的小米账号并指定投播的目标小爱音箱" Style="{StaticResource BodyTextBlockStyle}" Foreground="{ThemeResource TextFillColorSecondaryBrush}"/>
+                    <TextBlock Text="音箱设备管理" Style="{StaticResource TitleTextBlockStyle}" FontWeight="SemiBold"/>
+                    <TextBlock Text="登录小米账号同步名下小爱音箱硬件并选择绑定投播目标" Style="{StaticResource BodyTextBlockStyle}" Foreground="{ThemeResource TextFillColorSecondaryBrush}"/>
                 </StackPanel>
 
-                <!-- Actions -->
-                <StackPanel Orientation="Horizontal" Spacing="8" HorizontalAlignment="Right" VerticalAlignment="Center">
+                <!-- Actions Button Bar -->
+                <StackPanel Orientation="Horizontal" Spacing="12" HorizontalAlignment="Right" VerticalAlignment="Center">
                     <Button Style="{StaticResource AccentButtonStyle}" Click="OnOpenQrLoginClick">
                         <StackPanel Orientation="Horizontal" Spacing="8">
-                            <FontIcon Glyph="&#xE8D7;" FontSize="13"/>
-                            <TextBlock Text="扫码登录"/>
+                            <FontIcon Glyph="&#xE701;" FontSize="13"/>
+                            <TextBlock Text="扫码登录小米账号"/>
                         </StackPanel>
                     </Button>
 
-                    <Button Style="{StaticResource DefaultButtonStyle}" Command="{x:Bind ViewModel.RefreshDevicesCommand}">
+                    <Button Command="{Binding RefreshDevicesCommand}">
                         <StackPanel Orientation="Horizontal" Spacing="8">
                             <FontIcon Glyph="&#xE72C;" FontSize="13"/>
-                            <TextBlock Text="刷新设备"/>
+                            <TextBlock Text="刷新列表"/>
                         </StackPanel>
                     </Button>
                 </StackPanel>
             </Grid>
 
-            <!-- Status Banner -->
-            <InfoBar IsOpen="{x:Bind ViewModel.StatusMessage, Mode=OneWay, Converter={StaticResource StringNotEmptyToBoolConverter}}"
-                     Message="{x:Bind ViewModel.StatusMessage, Mode=OneWay}"
+            <!-- Status Notice InfoBar -->
+            <InfoBar IsOpen="{Binding StatusMessage, Converter={StaticResource StringNotEmptyToBoolConverter}}"
+                     Message="{Binding StatusMessage}"
                      Severity="Informational"
                      IsClosable="False"/>
 
             <!-- Loading indicator -->
             <ProgressBar IsIndeterminate="True"
-                         Visibility="{x:Bind ViewModel.IsLoading, Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverter}}"
+                         Visibility="{Binding IsLoading, Converter={StaticResource BooleanToVisibilityConverter}}"
                          HorizontalAlignment="Stretch"/>
 
             <!-- Speakers List Grid -->
-            <ListView ItemsSource="{x:Bind ViewModel.Devices, Mode=OneWay}"
+            <ListView ItemsSource="{Binding Devices}"
                       SelectionMode="None"
                       Padding="0">
                 <ListView.ItemContainerStyle>
@@ -59,7 +58,7 @@
                 </ListView.ItemContainerStyle>
 
                 <ListView.ItemTemplate>
-                    <DataTemplate x:DataType="models:SpeakerDevice">
+                    <DataTemplate>
                         <Border CornerRadius="10"
                                 BorderThickness="1"
                                 BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
@@ -83,35 +82,39 @@
                                 <!-- Info Details -->
                                 <StackPanel Grid.Column="1" VerticalAlignment="Center" Spacing="4">
                                     <StackPanel Orientation="Horizontal" Spacing="8">
-                                        <TextBlock Text="{x:Bind DisplayName}" Style="{StaticResource BodyStrongTextBlockStyle}"/>
+                                        <TextBlock Text="{Binding DisplayName}" Style="{StaticResource BodyStrongTextBlockStyle}"/>
                                         <Border CornerRadius="4"
                                                 Background="{ThemeResource AccentFillColorDefaultBrush}"
                                                 Padding="6,2"
-                                                Visibility="{x:Bind IsSelected, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                                Visibility="{Binding IsSelected, Converter={StaticResource BooleanToVisibilityConverter}}">
                                             <TextBlock Text="当前绑定" FontSize="11" FontWeight="SemiBold" Foreground="White"/>
                                         </Border>
                                     </StackPanel>
 
                                     <StackPanel Orientation="Horizontal" Spacing="12">
-                                        <TextBlock Text="{x:Bind Hardware, Converter={StaticResource StringPrefixConverter}, ConverterParameter='型号: '}"
+                                        <TextBlock Text="{Binding Hardware, Converter={StaticResource StringPrefixConverter}, ConverterParameter='型号: '}"
                                                    Style="{StaticResource CaptionTextBlockStyle}"
                                                    Foreground="{ThemeResource TextFillColorSecondaryBrush}"/>
-                                        <TextBlock Text="{x:Bind CurrentLocalIP, Converter={StaticResource StringPrefixConverter}, ConverterParameter='IP: '}"
+                                        <TextBlock Text="{Binding CurrentLocalIP, Converter={StaticResource StringPrefixConverter}, ConverterParameter='IP: '}"
                                                    Style="{StaticResource CaptionTextBlockStyle}"
                                                    Foreground="{ThemeResource TextFillColorSecondaryBrush}"/>
-                                        <TextBlock Text="{x:Bind DeviceID, Converter={StaticResource StringPrefixConverter}, ConverterParameter='DID: '}"
+                                        <TextBlock Text="{Binding DeviceID, Converter={StaticResource StringPrefixConverter}, ConverterParameter='DID: '}"
                                                    Style="{StaticResource CaptionTextBlockStyle}"
                                                    Foreground="{ThemeResource TextFillColorTertiaryBrush}"/>
                                     </StackPanel>
                                 </StackPanel>
 
-                                <!-- Bind Button -->
+                                <!-- Action Select Button -->
                                 <Button Grid.Column="2"
-                                        Content="绑定此设备"
-                                        Tag="{x:Bind}"
+                                        Tag="{Binding}"
                                         Click="OnBindSpeakerClick"
-                                        Style="{StaticResource DefaultButtonStyle}"
-                                        VerticalAlignment="Center"/>
+                                        VerticalAlignment="Center"
+                                        Padding="14,6">
+                                    <StackPanel Orientation="Horizontal" Spacing="6">
+                                        <FontIcon Glyph="&#xE73E;" FontSize="12"/>
+                                        <TextBlock Text="设为投播目标"/>
+                                    </StackPanel>
+                                </Button>
                             </Grid>
                         </Border>
                     </DataTemplate>
