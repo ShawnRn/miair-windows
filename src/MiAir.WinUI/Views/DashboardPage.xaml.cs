@@ -25,7 +25,7 @@ public sealed partial class DashboardPage : Page
         ViewModel.StopPolling();
     }
 
-    private void OnVolumeSliderValueChanged(object sender, Microsoft.UI.Xaml.Controls.Primitives.RangeBaseValueChangedEventArgs e)
+    public void OnVolumeSliderValueChanged(object sender, Microsoft.UI.Xaml.Controls.Primitives.RangeBaseValueChangedEventArgs e)
     {
         _ = ViewModel.ChangeVolumeCommand.ExecuteAsync(e.NewValue);
     }

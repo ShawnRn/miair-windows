@@ -21,7 +21,7 @@ public sealed partial class DevicesPage : Page
         await ViewModel.RefreshDevicesAsync();
     }
 
-    private async void OnOpenQrLoginClick(object sender, RoutedEventArgs e)
+    public async void OnOpenQrLoginClick(object sender, RoutedEventArgs e)
     {
         var dialog = new QrLoginDialog
         {
@@ -35,7 +35,7 @@ public sealed partial class DevicesPage : Page
         }
     }
 
-    private void OnBindSpeakerClick(object sender, RoutedEventArgs e)
+    public void OnBindSpeakerClick(object sender, RoutedEventArgs e)
     {
         if (sender is Button btn && btn.Tag is MiAir.WinUI.Models.SpeakerDevice dev)
         {

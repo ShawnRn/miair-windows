@@ -102,7 +102,7 @@ public sealed partial class MainWindow : Window
         }
     }
 
-    private void OnNavViewSelectionChanged(NavigationView sender, NavigationViewSelectionChangedEventArgs args)
+    public void OnNavViewSelectionChanged(NavigationView sender, NavigationViewSelectionChangedEventArgs args)
     {
         if (args.SelectedItem is NavigationViewItem item && item.Tag is string tag)
         {

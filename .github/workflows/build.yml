@@ -44,19 +44,14 @@ jobs:
       - name: Build WinUI 3 App
         run: |
           $rid = if ("${{ matrix.platform }}" -eq "ARM64") { "win-arm64" } else { "win-x64" }
-          $proc = Start-Process dotnet -ArgumentList "publish src/MiAir.WinUI/MiAir.WinUI.csproj -c ${{ matrix.configuration }} -r $rid --self-contained true -p:Platform=${{ matrix.platform }} -p:WindowsPackageType=None -v normal" -NoNewWindow -PassThru -Wait
-          if ($proc.ExitCode -ne 0) {
-            Write-Host "Publish failed with exit code $($proc.ExitCode). Checking obj directory..." -ForegroundColor Red
-            Get-ChildItem -Path "src/MiAir.WinUI/obj" -Filter "*output.json" -Recurse | ForEach-Object {
-              Write-Host "=== Output JSON: $($_.FullName) ===" -ForegroundColor Yellow
-              Get-Content $_.FullName
-            }
-            Get-ChildItem -Path "src/MiAir.WinUI/obj" -Filter "*input.json" -Recurse | ForEach-Object {
-              Write-Host "=== Input JSON: $($_.FullName) ===" -ForegroundColor Cyan
-              Get-Content $_.FullName
-            }
-            exit $proc.ExitCode
-          }
+          dotnet publish src/MiAir.WinUI/MiAir.WinUI.csproj `
+            -c ${{ matrix.configuration }} `
+            -r $rid `
+            --self-contained true `
+            -p:Platform=${{ matrix.platform }} `
+            -p:WindowsPackageType=None `
+            -p:PublishReadyToRun=false `
+            -v normal
 
       - name: Package Output Zip
         run: |
