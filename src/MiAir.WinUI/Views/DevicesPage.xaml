@@ -108,8 +108,8 @@
                                 <!-- Bind Button -->
                                 <Button Grid.Column="2"
                                         Content="绑定此设备"
-                                        Command="{Binding ElementName=RootPage, Path=ViewModel.SelectDeviceCommand}"
-                                        CommandParameter="{x:Bind}"
+                                        Tag="{x:Bind}"
+                                        Click="OnBindSpeakerClick"
                                         Style="{StaticResource DefaultButtonStyle}"
                                         VerticalAlignment="Center"/>
                             </Grid>

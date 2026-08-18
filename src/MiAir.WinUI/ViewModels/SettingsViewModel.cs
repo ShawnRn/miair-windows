@@ -16,25 +16,25 @@ public partial class SettingsViewModel : ObservableObject
     private bool _airPlayEnabled = true;
 
     [ObservableProperty]
-    private int _airPlayPort = 5000;
+    private double _airPlayPort = 5000;
 
     [ObservableProperty]
-    private int _httpPort = 8300;
+    private double _httpPort = 8300;
 
     [ObservableProperty]
-    private int _bufferMs = 500;
+    private double _bufferMs = 500;
 
     [ObservableProperty]
     private bool _dlnaEnabled = true;
 
     [ObservableProperty]
-    private int _dlnaPort = 8301;
+    private double _dlnaPort = 8301;
 
     [ObservableProperty]
     private string _sourcePolicy = "latest";
 
     [ObservableProperty]
-    private int _idleTimeout = 10;
+    private double _idleTimeout = 10;
 
     [ObservableProperty]
     private string _preferredProtocol = "airplay";
@@ -80,13 +80,13 @@ public partial class SettingsViewModel : ObservableObject
         var s = SettingsService.Instance.Settings;
         s.DeviceName = DeviceName;
         s.AirPlayEnabled = AirPlayEnabled;
-        s.AirPlayPort = AirPlayPort;
-        s.HttpPort = HttpPort;
-        s.BufferMs = BufferMs;
+        s.AirPlayPort = (int)AirPlayPort;
+        s.HttpPort = (int)HttpPort;
+        s.BufferMs = (int)BufferMs;
         s.DlnaEnabled = DlnaEnabled;
-        s.DlnaPort = DlnaPort;
+        s.DlnaPort = (int)DlnaPort;
         s.SourcePolicy = SourcePolicy;
-        s.IdleTimeout = IdleTimeout;
+        s.IdleTimeout = (int)IdleTimeout;
         s.PreferredProtocol = PreferredProtocol;
         s.MinimizeToTrayOnClose = MinimizeToTrayOnClose;
         s.AppTheme = AppTheme;

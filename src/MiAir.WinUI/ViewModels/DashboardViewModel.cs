@@ -51,7 +51,7 @@ public partial class DashboardViewModel : ObservableObject
     private string _tokenStatusText = "未登录小米账号";
 
     [ObservableProperty]
-    private int _volume = 50;
+    private double _volume = 50;
 
     public DashboardViewModel()
     {

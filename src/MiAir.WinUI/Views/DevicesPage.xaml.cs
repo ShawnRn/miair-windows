@@ -34,4 +34,12 @@ public sealed partial class DevicesPage : Page
             await ViewModel.RefreshDevicesAsync();
         }
     }
+
+    private void OnBindSpeakerClick(object sender, RoutedEventArgs e)
+    {
+        if (sender is Button btn && btn.Tag is MiAir.WinUI.Models.SpeakerDevice dev)
+        {
+            _ = ViewModel.SelectDeviceCommand.ExecuteAsync(dev);
+        }
+    }
 }

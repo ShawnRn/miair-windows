@@ -46,7 +46,7 @@
                             <Border CornerRadius="6"
                                     Background="{ThemeResource SubtleFillColorSecondaryBrush}"
                                     Padding="10,4"
-                                    Visibility="{x:Bind ViewModel.IsStreaming, Mode=OneWay, Converter={StaticResource BooleanToVisibilityInvertedConverter}, FallbackValue=Visible}">
+                                    Visibility="{x:Bind ViewModel.IsStreaming, Mode=OneWay, Converter={StaticResource BooleanToVisibilityInvertedConverter}}">
                                 <StackPanel Orientation="Horizontal" Spacing="6">
                                     <FontIcon Glyph="&#xE9F5;" FontSize="12" Foreground="{ThemeResource TextFillColorSecondaryBrush}"/>
                                     <TextBlock Text="{x:Bind ViewModel.StatusBadgeText, Mode=OneWay}"
